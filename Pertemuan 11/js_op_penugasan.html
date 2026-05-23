@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JS - Operator Penugasan</title>
+</head>
+<body>
+    <h1>Operator Penugasan (Assignment)</h1>
+    <p>Operator: =, +=, -=, *=, /=, %=, **=</p>
+
+    <div id="hasil"></div>
+
+    <script>
+        let x = 10;
+        let hasil = "";
+
+        hasil += `<p>Nilai awal x = ${x}</p>`;
+        
+        x += 5;  // x = x + 5
+        hasil += `<p>x += 5  → x = ${x}</p>`;
+        
+        x -= 3;  // x = x - 3
+        hasil += `<p>x -= 3  → x = ${x}</p>`;
+        
+        x *= 2;  // x = x * 2
+        hasil += `<p>x *= 2  → x = ${x}</p>`;
+        
+        x /= 4;  // x = x / 4
+        hasil += `<p>x /= 4  → x = ${x}</p>`;
+        
+        x %= 3;  // x = x % 3
+        hasil += `<p>x %= 3  → x = ${x}</p>`;
+        
+        let y = 2;
+        y **= 3; // y = y ** 3 (2 pangkat 3 = 8)
+        hasil += `<p>y **= 3 → y = ${y}</p>`;
+
+        document.getElementById("hasil").innerHTML = hasil;
+        
+        // console log
+        console.log("Hasil akhir x = " + x);
+        console.log("Hasil akhir y = " + y);
+    </script>
+</body>
+</html>

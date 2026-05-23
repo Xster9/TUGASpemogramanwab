@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Review JavaScript Dasar</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        .soal { background: #f0f0f0; margin: 10px 0; padding: 10px; border-radius: 5px; }
+        button { margin-top: 10px; padding: 5px 10px; cursor: pointer; }
+        .jawaban { margin-top: 10px; padding: 8px; background: #e0ffe0; display: none; }
+    </style>
+</head>
+<body>
+    <h1>Review: Latihan Soal JavaScript</h1>
+    <p>Jawab soal berikut, lalu klik tombol "Lihat Jawaban" untuk cek hasil.</p>
+
+    <div class="soal">
+        <strong>Soal 1:</strong> Deklarasikan variabel `nama` dengan nilai "Andi" dan `umur` dengan nilai 20. Tampilkan "Nama saya Andi, umur 20 tahun".
+        <br>
+        <button onclick="jawab1()">Lihat Jawaban</button>
+        <div id="jawab1" class="jawaban"></div>
+    </div>
+
+    <div class="soal">
+        <strong>Soal 2:</strong> Hitung luas persegi panjang dengan panjang 12 dan lebar 5. Gunakan operator aritmatika.
+        <br>
+        <button onclick="jawab2()">Lihat Jawaban</button>
+        <div id="jawab2" class="jawaban"></div>
+    </div>
+
+    <div class="soal">
+        <strong>Soal 3:</strong> Buat variabel `x = 7`. Kemudian kalikan x dengan 3 menggunakan operator penugasan.
+        <br>
+        <button onclick="jawab3()">Lihat Jawaban</button>
+        <div id="jawab3" class="jawaban"></div>
+    </div>
+
+    <div class="soal">
+        <strong>Soal 4:</strong> Bandingkan apakah 5 sama dengan "5" (nilai) dan apakah 5 identik dengan "5" (nilai & tipe).
+        <br>
+        <button onclick="jawab4()">Lihat Jawaban</button>
+        <div id="jawab4" class="jawaban"></div>
+    </div>
+
+    <div class="soal">
+        <strong>Soal 5:</strong> Buat program sederhana yang menampilkan "Selamat belajar JavaScript!" menggunakan console.log, alert, dan innerHTML.
+        <br>
+        <button onclick="jawab5()">Lihat Jawaban</button>
+        <div id="jawab5" class="jawaban"></div>
+    </div>
+
+    <script>
+        function jawab1() {
+            let nama = "Andi";
+            let umur = 20;
+            let output = `let nama = "Andi";<br>let umur = 20;<br>console.log("Nama saya " + nama + ", umur " + umur + " tahun");<br><br>Hasil: Nama saya ${nama}, umur ${umur} tahun`;
+            document.getElementById("jawab1").innerHTML = output;
+            document.getElementById("jawab1").style.display = "block";
+        }
+
+        function jawab2() {
+            let panjang = 12;
+            let lebar = 5;
+            let luas = panjang * lebar;
+            let output = `let panjang = 12;<br>let lebar = 5;<br>let luas = panjang * lebar; // 12 * 5<br>console.log(luas); // ${luas}<br><br>Hasil: Luas persegi panjang = ${luas}`;
+            document.getElementById("jawab2").innerHTML = output;
+            document.getElementById("jawab2").style.display = "block";
+        }
+
+        function jawab3() {
+            let x = 7;
+            x *= 3;
+            let output = `let x = 7;<br>x *= 3;  // sama dengan x = x * 3<br>console.log(x); // ${x}<br><br>Hasil: x = ${x}`;
+            document.getElementById("jawab3").innerHTML = output;
+            document.getElementById("jawab3").style.display = "block";
+        }
+
+        function jawab4() {
+            let samaNilai = (5 == "5");
+            let identik = (5 === "5");
+            let output = `5 == "5" → ${samaNilai} (karena nilai sama, meski tipe beda)<br>
+                          5 === "5" → ${identik} (karena tipe data berbeda: number vs string)<br><br>
+                          Kesimpulan: == hanya cek nilai, === cek nilai DAN tipe data.`;
+            document.getElementById("jawab4").innerHTML = output;
+            document.getElementById("jawab4").style.display = "block";
+        }
+
+        function jawab5() {
+            let pesan = "Selamat belajar JavaScript!";
+            console.log(pesan);
+            alert(pesan);
+            // innerHTML bisa ditampilkan di elemen yang sudah disiapkan
+            let output = `// Cara 1: console.log("${pesan}");<br>
+                          // Cara 2: alert("${pesan}");<br>
+                          // Cara 3: innerHTML<br><br>
+                          <strong>Hasil innerHTML di bawah ini:</strong><br>
+                          <span style="color: green;">${pesan}</span>`;
+            document.getElementById("jawab5").innerHTML = output;
+            document.getElementById("jawab5").style.display = "block";
+        }
+    </script>
+</body>
+</html>

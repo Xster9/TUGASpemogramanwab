@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JS - Variabel</title>
+</head>
+<body>
+    <h1>Variabel dalam JavaScript</h1>
+    <p>Buka console (F12) untuk melihat hasil.</p>
+
+    <script>
+        // Tiga cara deklarasi variabel
+        var nama = "Budi";      // var (lama, function scope)
+        let umur = 25;          // let (modern, block scope)
+        const PI = 3.14;        // const (nilai tetap/tidak bisa diubah)
+
+        // Tipe data
+        let isActive = true;     // boolean
+        let alamat = "Jakarta";  // string
+        let tinggi = 175.5;      // number
+        let hobi = ["membaca", "coding"]; // array
+        let profile = {          // object
+            nama: "Budi",
+            umur: 25
+        };
+
+        // Menampilkan ke console
+        console.log("Nama: " + nama);
+        console.log("Umur: " + umur);
+        console.log("PI: " + PI);
+        console.log("Sudah active? " + isActive);
+        console.log("Alamat: " + alamat);
+        console.log("Tinggi: " + tinggi);
+        console.log("Hobi: " + hobi[0] + " dan " + hobi[1]);
+        console.log("Profile: ", profile);
+
+        // Mengubah nilai variabel (let bisa, const tidak bisa)
+        umur = 26;
+        console.log("Umur setelah diubah: " + umur);
+        
+        // const PI = 3.15; // ERROR! const tidak bisa diubah
+    </script>
+</body>
+</html>

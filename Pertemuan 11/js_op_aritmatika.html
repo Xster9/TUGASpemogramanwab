@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JS - Operator Aritmatika</title>
+</head>
+<body>
+    <h1>Operator Aritmatika</h1>
+    <p>Operator: + (tambah), - (kurang), * (kali), / (bagi), % (modulus/sisa bagi), ** (pangkat)</p>
+
+    <div id="hasil"></div>
+
+    <script>
+        let a = 10;
+        let b = 3;
+
+        let penjumlahan = a + b;
+        let pengurangan = a - b;
+        let perkalian = a * b;
+        let pembagian = a / b;
+        let modulus = a % b;
+        let pangkat = a ** b;
+
+        // Menampilkan ke console
+        console.log(a + " + " + b + " = " + penjumlahan);
+        console.log(a + " - " + b + " = " + pengurangan);
+        console.log(a + " * " + b + " = " + perkalian);
+        console.log(a + " / " + b + " = " + pembagian);
+        console.log(a + " % " + b + " = " + modulus);
+        console.log(a + " ** " + b + " = " + pangkat);
+
+        // Menampilkan ke halaman
+        let output = `
+            <p>${a} + ${b} = ${penjumlahan}</p>
+            <p>${a} - ${b} = ${pengurangan}</p>
+            <p>${a} × ${b} = ${perkalian}</p>
+            <p>${a} ÷ ${b} = ${pembagian}</p>
+            <p>${a} % ${b} = ${modulus}</p>
+            <p>${a} pangkat ${b} = ${pangkat}</p>
+        `;
+        document.getElementById("hasil").innerHTML = output;
+    </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JS - Output</title>
+</head>
+<body>
+    <h1>Macam-macam Output JavaScript</h1>
+
+    <p id="demo"></p>
+    <button onclick="tampilkanOutput()">Tampilkan Output</button>
+
+    <script>
+        // 1. console.log (untuk debugging)
+        console.log("1. Ini output console.log");
+
+        // 2. alert (popup)
+        // alert("2. Ini output alert");
+
+        // 3. document.write (menimpa halaman, hati-hati)
+        // document.write("3. Ini output document.write");
+
+        // 4. innerHTML (mengubah isi elemen HTML)
+        function tampilkanOutput() {
+            document.getElementById("demo").innerHTML = "4. Output menggunakan innerHTML";
+            
+            // 5. window.confirm (konfirmasi)
+            let konfirmasi = confirm("Apakah Anda mengerti output JavaScript?");
+            console.log("User menjawab: " + konfirmasi);
+        }
+    </script>
+</body>
+</html>

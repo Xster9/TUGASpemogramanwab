@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JS - Operator Perbandingan</title>
+</head>
+<body>
+    <h1>Operator Perbandingan</h1>
+    <p>Operator: ==, ===, !=, !==, >, <, >=, <=</p>
+
+    <div id="hasil"></div>
+
+    <script>
+        let a = 10;
+        let b = "10";
+        let c = 5;
+
+        let hasil = "";
+
+        hasil += `<p>a = ${a} (number), b = "${b}" (string), c = ${c}</p><hr>`;
+        
+        // Sama nilai (tidak peduli tipe)
+        hasil += `<p>a == b → ${a == b} (nilai sama, meski tipe beda)</p>`;
+        
+        // Sama nilai DAN tipe (strict equality)
+        hasil += `<p>a === b → ${a === b} (nilai sama tapi tipe beda → false)</p>`;
+        
+        // Tidak sama nilai
+        hasil += `<p>a != c → ${a != c}</p>`;
+        
+        // Tidak sama nilai DAN tipe
+        hasil += `<p>a !== b → ${a !== b} (true karena tipe beda)</p>`;
+        
+        // Lebih besar / kecil
+        hasil += `<p>a > c → ${a > c}</p>`;
+        hasil += `<p>a < c → ${a < c}</p>`;
+        hasil += `<p>a >= 10 → ${a >= 10}</p>`;
+        hasil += `<p>c <= 5 → ${c <= 5}</p>`;
+
+        document.getElementById("hasil").innerHTML = hasil;
+
+        // Console
+        console.log("10 == '10' :", 10 == "10");
+        console.log("10 === '10' :", 10 === "10");
+        console.log("10 != 5 :", 10 != 5);
+        console.log("10 !== '10' :", 10 !== "10");
+    </script>
+</body>
+</html>
