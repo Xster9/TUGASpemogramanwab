@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kasir Toko - Implementasi Operator JavaScript</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .form-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .result-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .cart-item {
+            background: white;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        input, select, button {
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+        }
+        button:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+        .btn-danger {
+            background: #e53e3e;
+        }
+        .btn-danger:hover {
+            background: #c53030;
+        }
+        .total {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
+        }
+        .operator-demo {
+            background: #2d3748;
+            color: #a0aec0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+        h3 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .badge {
+            display: inline-block;
+            background: #e2e8f0;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin-left: 10px;
+        }
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🛒 Aplikasi Kasir Toko</h1>
+    <div class="subtitle">Implementasi Semua Operator JavaScript dalam Kasus Nyata</div>
+
+    <div class="grid">
+        <!-- Bagian Input & Belanja -->
+        <div class="form-section">
+            <h3>📝 Tambah Belanjaan</h3>
+            <input type="text" id="productName" placeholder="Nama Produk" style="width: 100%;">
+            <input type="number" id="productPrice" placeholder="Harga" style="width: 48%;">
+            <input type="number" id="productQty" placeholder="Jumlah" value="1" style="width: 48%;">
+            <button onclick="tambahKeKeranjang()" style="width: 100%; margin-top: 10px;">➕ Tambah ke Keranjang</button>
+
+            <h3 style="margin-top: 20px;">🛍️ Keranjang Belanja</h3>
+            <div id="cartList"></div>
+
+            <div class="total" id="totalDisplay">Total: Rp 0</div>
+
+            <h3>💳 Pembayaran</h3>
+            <input type="number" id="paymentAmount" placeholder="Jumlah Uang Dibayar" style="width: 100%;">
+            <button onclick="prosesPembayaran()" style="width: 100%; background: #48bb78;">💰 Proses Pembayaran</button>
+            <div id="paymentResult" style="margin-top: 10px; padding: 10px; border-radius: 5px;"></div>
+        </div>
+
+        <!-- Bagian Edukasi Operator -->
+        <div class="result-section">
+            <h3>📖 Operator yang Digunakan dalam Kasus Ini</h3>
+            <div id="operatorInfo"></div>
+            <button onclick="analisisOperator()" style="width: 100%; margin-top: 10px;">🔍 Analisis Operator yang Terpakai</button>
+            <div id="operatorAnalysis" class="operator-demo" style="margin-top: 10px;"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ============= DATA KERANJANG =============
+    let keranjang = [];  // Array untuk menyimpan item
+
+    // ============= FUNGSI TAMBAH KERANJANG =============
+    function tambahKeKeranjang() {
+        let nama = document.getElementById('productName').value;
+        let harga = parseFloat(document.getElementById('productPrice').value);
+        let qty = parseInt(document.getElementById('productQty').value);
+
+        // Validasi input
+        if (!nama || isNaN(harga) || isNaN(qty) || harga <= 0 || qty <= 0) {
+            alert('Harap isi semua data dengan benar!');
+            return;
+        }
+
+        // OPERATOR ARITMATIKA: perkalian untuk subtotal
+        let subtotal = harga * qty;  // *
+
+        // OPERATOR PENUGASAN: push ke array (bukan operator assignment biasa, tapi tetap assignment)
+        keranjang.push({
+            nama: nama,
+            harga: harga,
+            qty: qty,
+            subtotal: subtotal
+        });
+
+        // Reset input
+        document.getElementById('productName').value = '';
+        document.getElementById('productPrice').value = '';
+        document.getElementById('productQty').value = '1';
+
+        // Update tampilan
+        tampilkanKeranjang();
+    }
+
+    // ============= HAPUS ITEM =============
+    function hapusItem(index) {
+        keranjang.splice(index, 1);  // Menghapus item
+        tampilkanKeranjang();
+    }
+
+    // ============= TAMPILKAN KERANJANG =============
+    function tampilkanKeranjang() {
+        let cartDiv = document.getElementById('cartList');
+        let total = 0;
+
+        if (keranjang.length === 0) {
+            cartDiv.innerHTML = '<p style="color: #999;">Keranjang kosong</p>';
+            document.getElementById('totalDisplay').innerHTML = 'Total: Rp 0';
+            return;
+        }
+
+        let html = '';
+        for (let i = 0; i < keranjang.length; i++) {
+            let item = keranjang[i];
+            // OPERATOR ARITMATIKA: penjumlahan untuk total
+            total += item.subtotal;  // += operator penugasan + aritmatika
+            html += `
+                <div class="cart-item">
+                    <div>
+                        <strong>${item.nama}</strong><br>
+                        Rp ${item.harga} x ${item.qty} = Rp ${item.subtotal}
+                    </div>
+                    <button class="btn-danger" onclick="hapusItem(${i})">Hapus</button>
+                </div>
+            `;
+        }
+
+        cartDiv.innerHTML = html;
+        document.getElementById('totalDisplay').innerHTML = `Total: Rp ${total.toLocaleString('id-ID')}`;
+        
+        // Simpan total ke variable global (atau bisa ambil dari DOM)
+        window.totalBelanja = total;
+    }
+
+    // ============= PROSES PEMBAYARAN =============
+    function prosesPembayaran() {
+        let bayar = parseFloat(document.getElementById('paymentAmount').value);
+        let total = window.totalBelanja || 0;
+        let resultDiv = document.getElementById('paymentResult');
+
+        if (isNaN(bayar) || bayar <= 0) {
+            resultDiv.innerHTML = '<span style="color: red;">⚠️ Masukkan jumlah uang yang valid!</span>';
+            return;
+        }
+
+        // OPERATOR PERBANDINGAN: cek apakah uang cukup
+        if (bayar >= total) {
+            // OPERATOR ARITMATIKA: pengurangan untuk kembalian
+            let kembalian = bayar - total;  // -
+            
+            // OPERATOR PERBANDINGAN LAIN: cek apakah kembalian 0
+            let status = (kembalian === 0) ? "LUNAS PAS" : "DENGAN KEMBALIAN";
+            
+            resultDiv.innerHTML = `
+                <div style="background: #c6f6d5; padding: 10px; border-radius: 5px; color: #22543d;">
+                    ✅ PEMBAYARAN BERHASIL!<br>
+                    Total: Rp ${total.toLocaleString('id-ID')}<br>
+                    Bayar: Rp ${bayar.toLocaleString('id-ID')}<br>
+                    Kembalian: Rp ${kembalian.toLocaleString('id-ID')}<br>
+                    Status: ${status}
+                </div>
+            `;
+            
+            // Reset keranjang setelah pembayaran (opsional)
+            // keranjang = [];8
+            // tampilkanKeranjang();
+        } else {
+            // OPERATOR ARITMATIKA: hitung kekurangan
+            let kekurangan = total - bayar;  // -
+            resultDiv.innerHTML = `
+                <div style="background: #fed7d7; padding: 10px; border-radius: 5px; color: #742a2a;">
+                    ❌ PEMBAYARAN GAGAL!<br>
+                    Total: Rp ${total.toLocaleString('id-ID')}<br>
+                    Bayar: Rp ${bayar.toLocaleString('id-ID')}<br>
+                    Kurang: Rp ${kekurangan.toLocaleString('id-ID')}<br>
+                    Silakan tambah uang Anda.
+                </div>
+            `;
+        }
+    }
+
+    // ============= ANALISIS SEMUA OPERATOR =============
+    function analisisOperator() {
+        let analysis = `
+╔══════════════════════════════════════════════════════════════════╗
+║           OPERATOR YANG DIGUNAKAN DALAM KASIR INI               ║
+╠══════════════════════════════════════════════════════════════════╣
+║ 1. OPERATOR ARITMATIKA                                          ║
+║    - Perkalian (*)      : harga * qty → subtotal item           ║
+║    - Penjumlahan (+)    : total += subtotal → akumulasi total   ║
+║    - Pengurangan (-)    : bayar - total → hitung kembalian      ║
+║    - Pengurangan (-)    : total - bayar → hitung kekurangan     ║
+║                                                                    ║
+║ 2. OPERATOR PENUGASAN (ASSIGNMENT)                              ║
+║    - Assignment (=)     : let total = 0; keranjang = []         ║
+║    - Addition assignment (+=) : total += subtotal               ║
+║    - Penggunaan dalam array push (implisit assignment)          ║
+║                                                                    ║
+║ 3. OPERATOR PERBANDINGAN (COMPARISON)                           ║
+║    - Lebih besar/sama (>=) : if(bayar >= total)                 ║
+║    - Sama dengan (===)     : if(kembalian === 0)                ║
+║    - Lebih kecil (<)       : if(bayar < total) → else bagian    ║
+║    - Tidak sama (!=)       : bisa ditambahkan untuk validasi    ║
+║                                                                    ║
+║ 4. OPERATOR LOGIKA (IMPLISIT DALAM PERCABANGAN)                 ║
+║    - AND (&&) digunakan dalam validasi input:                   ║
+║      if(!nama || isNaN(harga)...)                               ║
+╚══════════════════════════════════════════════════════════════════╝
+
+📌 CONTOH KODE NYATA DARI PROGRAM:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1️⃣ Aritmatika:
+   let subtotal = harga * qty;              // Perkalian
+   total += subtotal;                       // Penjumlahan + assignment
+   let kembalian = bayar - total;           // Pengurangan
+
+2️⃣ Perbandingan:
+   if (bayar >= total) { ... }              // Lebih besar / sama dengan
+   if (kembalian === 0) { ... }             // Strict equality
+
+3️⃣ Penugasan:
+   keranjang.push({...})                    // Assignment ke array
+   let total = 0;                           // Assignment variabel
+   total += subtotal;                       // Compound assignment
+
+4️⃣ Logika:
+   if (!nama || isNaN(harga) || harga <= 0) // Operator NOT (!) dan OR (||)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        `;
+        
+        document.getElementById('operatorAnalysis').innerHTML = analysis.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;');
+    }
+
+    // Tampilkan informasi operator awal
+    function tampilkanInfoOperator() {
+        let info = `
+            <div style="background: #edf2f7; padding: 15px; border-radius: 5px;">
+                <p>✅ <strong>Aritmatika:</strong> Menghitung subtotal (harga × jumlah), total belanja (akumulasi), kembalian/kekurangan.</p>
+                <p>✅ <strong>Penugasan:</strong> Menyimpan data ke variabel (keranjang, total, dll) dan operator <code>+=</code> untuk akumulasi.</p>
+                <p>✅ <strong>Perbandingan:</strong> Membandingkan total belanja dengan uang bayar (<code>>=</code>, <code><</code>, <code>===</code>).</p>
+                <p>✅ <strong>Logika:</strong> Validasi input dengan <code>||</code> (OR) dan <code>!</code> (NOT).</p>
+                <hr>
+                <p><strong>💡 Coba skenario:</strong></p>
+                <ul>
+                    <li>Beli 2 item: "Buku" Rp 50.000 x 2, "Pensil" Rp 5.000 x 3</li>
+                    <li>Total akan dihitung otomatis (operator +)</li>
+                    <li>Bayar Rp 120.000 → cek perbandingan (>= total), hitung kembalian (-)</li>
+                    <li>Bayar Rp 100.000 → cek perbandingan, hitung kekurangan (-)</li>
+                </ul>
+            </div>
+        `;
+        document.getElementById('operatorInfo').innerHTML = info;
+    }
+
+    // Inisialisasi awal
+    tampilkanKeranjang();
+    tampilkanInfoOperator();
+    window.totalBelanja = 0;
+</script>
+</body>
+</html
