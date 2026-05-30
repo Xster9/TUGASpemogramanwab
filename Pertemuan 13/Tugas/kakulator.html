@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Kalkulator Modern</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Poppins', 'Segoe UI', system-ui, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Container kalkulator dengan efek glassmorphism */
+        .calculator {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 48px;
+            padding: 24px 20px 32px 20px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .calculator:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Layar */
+        .screen {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            padding: 24px 20px;
+            text-align: right;
+            border-radius: 32px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .expression {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            min-height: 28px;
+            font-weight: 400;
+            word-wrap: break-word;
+            word-break: break-all;
+            letter-spacing: 0.5px;
+        }
+
+        .result {
+            color: white;
+            font-size: 3.2rem;
+            font-weight: 600;
+            letter-spacing: -1px;
+            word-wrap: break-word;
+            word-break: break-all;
+            line-height: 1.2;
+            margin-top: 8px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Grid tombol */
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        button {
+            border: none;
+            border-radius: 60px;
+            font-size: 1.6rem;
+            font-weight: 600;
+            padding: 18px 0;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Poppins', monospace;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+
+        button:active {
+            transform: scale(0.96);
+        }
+
+        /* Tombol operator dengan gradien */
+        .operator {
+            background: linear-gradient(135deg, #ff9a56, #ff6b56);
+            border: none;
+            box-shadow: 0 4px 15px rgba(255, 107, 86, 0.3);
+        }
+
+        /* Tombol fungsi khusus */
+        .function {
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .equals {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        /* Tombol angka */
+        .number {
+            background: rgba(255, 255, 255, 0.12);
+            font-weight: 500;
+        }
+
+        .number:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .zero {
+            grid-column: span 2;
+        }
+
+        .perc {
+            font-size: 1.3rem;
+        }
+
+        /* Efek glow untuk tombol saat ditekan */
+        button:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+<div class="calculator">
+    <div class="screen">
+        <div class="expression" id="expression"></div>
+        <div class="result" id="result">0</div>
+    </div>
+    <div class="buttons">
+        <!-- baris 1 -->
+        <button class="function" data-action="clear">C</button>
+        <button class="function" data-op="negate">±</button>
+        <button class="function perc" data-op="%">%</button>
+        <button class="operator" data-op="/">÷</button>
+
+        <!-- baris 2 -->
+        <button class="number" data-num="7">7</button>
+        <button class="number" data-num="8">8</button>
+        <button class="number" data-num="9">9</button>
+        <button class="operator" data-op="*">×</button>
+
+        <!-- baris 3 -->
+        <button class="number" data-num="4">4</button>
+        <button class="number" data-num="5">5</button>
+        <button class="number" data-num="6">6</button>
+        <button class="operator" data-op="-">-</button>
+
+        <!-- baris 4 -->
+        <button class="number" data-num="1">1</button>
+        <button class="number" data-num="2">2</button>
+        <button class="number" data-num="3">3</button>
+        <button class="operator" data-op="+">+</button>
+
+        <!-- baris 5 -->
+        <button class="number zero" data-num="0">0</button>
+        <button class="number" data-num=".">,</button>
+        <button class="operator equals" data-action="equals">=</button>
+    </div>
+</div>
+
+<script>
+    // State kalkulator
+    let currentInput = "0";
+    let previousValue = null;
+    let currentOperator = null;
+    let waitingForOperand = false;
+    let expressionDisplay = "";
+
+    const expressionEl = document.getElementById("expression");
+    const resultEl = document.getElementById("result");
+
+    function updateDisplay() {
+        resultEl.innerText = currentInput;
+        expressionEl.innerText = expressionDisplay;
+    }
+
+    function inputDigit(digit) {
+        if (waitingForOperand) {
+            currentInput = digit;
+            waitingForOperand = false;
+        } else {
+            if (currentInput === "0" && digit !== ".") {
+                currentInput = digit;
+            } else {
+                currentInput += digit;
+            }
+        }
+        updateDisplay();
+    }
+
+    function inputDecimal() {
+        if (waitingForOperand) {
+            currentInput = "0.";
+            waitingForOperand = false;
+            updateDisplay();
+            return;
+        }
+        if (!currentInput.includes(".")) {
+            currentInput += ".";
+        }
+        updateDisplay();
+    }
+
+    function clearAll() {
+        currentInput = "0";
+        previousValue = null;
+        currentOperator = null;
+        waitingForOperand = false;
+        expressionDisplay = "";
+        updateDisplay();
+    }
+
+    function negate() {
+        let num = parseFloat(currentInput);
+        if (isNaN(num)) return;
+        num = -num;
+        currentInput = num.toString();
+        updateDisplay();
+    }
+
+    function percent() {
+        let num = parseFloat(currentInput);
+        if (isNaN(num)) return;
+        num = num / 100;
+        currentInput = num.toString();
+        updateDisplay();
+    }
+
+    function performOperation() {
+        if (previousValue === null || currentOperator === null || waitingForOperand) {
+            return false;
+        }
+        let a = parseFloat(previousValue);
+        let b = parseFloat(currentInput);
+        if (isNaN(a) || isNaN(b)) return false;
+
+        let result;
+        switch (currentOperator) {
+            case "+":
+                result = a + b;
+                break;
+            case "-":
+                result = a - b;
+                break;
+            case "*":
+                result = a * b;
+                break;
+            case "/":
+                if (b === 0) {
+                    result = "Error";
+                } else {
+                    result = a / b;
+                }
+                break;
+            default:
+                return false;
+        }
+
+        if (result === "Error") {
+            currentInput = "Error";
+            previousValue = null;
+            currentOperator = null;
+            waitingForOperand = true;
+            expressionDisplay = "";
+            updateDisplay();
+            return true;
+        }
+
+        result = parseFloat(result.toFixed(8));
+        currentInput = result.toString();
+        previousValue = null;
+        currentOperator = null;
+        waitingForOperand = true;
+        updateDisplay();
+        return true;
+    }
+
+    function setOperator(op) {
+        if (currentInput === "Error") {
+            clearAll();
+        }
+
+        if (previousValue !== null && currentOperator !== null && !waitingForOperand) {
+            performOperation();
+            previousValue = parseFloat(currentInput);
+        } else {
+            previousValue = parseFloat(currentInput);
+        }
+
+        currentOperator = op;
+        waitingForOperand = true;
+
+        expressionDisplay = previousValue + " " + getSymbol(op);
+        updateDisplay();
+    }
+
+    function getSymbol(op) {
+        if (op === "+") return "+";
+        if (op === "-") return "-";
+        if (op === "*") return "×";
+        if (op === "/") return "÷";
+        return op;
+    }
+
+    function handleEquals() {
+        if (currentOperator === null || waitingForOperand) {
+            return;
+        }
+        
+        let oldExpr = expressionDisplay;
+        
+        performOperation();
+
+        if (currentInput !== "Error") {
+            expressionDisplay = oldExpr + " " + currentInput + " =";
+        } else {
+            expressionDisplay = "";
+        }
+        waitingForOperand = true;
+        previousValue = null;
+        currentOperator = null;
+        updateDisplay();
+    }
+
+    // Event binding
+    document.querySelectorAll(".number").forEach(btn => {
+        btn.addEventListener("click", () => {
+            if (currentInput === "Error") clearAll();
+            let num = btn.getAttribute("data-num");
+            if (num === ".") {
+                inputDecimal();
+            } else {
+                inputDigit(num);
+            }
+        });
+    });
+
+    document.querySelectorAll(".operator").forEach(btn => {
+        btn.addEventListener("click", () => {
+            if (currentInput === "Error") clearAll();
+            let op = btn.getAttribute("data-op");
+            if (op === "+") setOperator("+");
+            else if (op === "-") setOperator("-");
+            else if (op === "*") setOperator("*");
+            else if (op === "/") setOperator("/");
+        });
+    });
+
+    document.querySelector("[data-action='clear']").addEventListener("click", () => {
+        clearAll();
+    });
+
+    document.querySelector("[data-op='negate']").addEventListener("click", () => {
+        if (currentInput === "Error") clearAll();
+        negate();
+    });
+
+    document.querySelector("[data-op='%']").addEventListener("click", () => {
+        if (currentInput === "Error") clearAll();
+        percent();
+    });
+
+    document.querySelector("[data-action='equals']").addEventListener("click", () => {
+        if (currentInput === "Error") {
+            clearAll();
+            return;
+        }
+        handleEquals();
+    });
+
+    // Inisialisasi
+    clearAll();
+</script>
+</body>
+</html>
